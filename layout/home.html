@@ -1,0 +1,8 @@
+{{define "home"}}
+<html>
+<form action="/image" method="POST">
+<button type="submit" value="submit" name="flickr">tag</button>
+</form>{{range $i:=.Images}}
+<img src="{{$i}}" />{{end}}
+</html>
+{{end}}

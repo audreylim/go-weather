@@ -1,4 +1,4 @@
-package main 
+package main
 
 import (
 	"fmt"
@@ -7,28 +7,26 @@ import (
 	"log"
 	"net/http"
 	//"net/url"
+	"html/template"
 	"encoding/json"
 )
 
-const homeTemplate = `
-<html>
-<form action="/image" method="POST">
-<input type="text" name="str"></input>
-<button type="submit" value="submit" name="flickr">tag</button>
-</form>
-</html>
-`
+var upperhomeTemplate = template.Must(template.New("image").ParseFiles("layout/home.html"))
+
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, homeTemplate)
+tempErr := upperhomeTemplate.ExecuteTemplate(w, "home", nil)
+if tempErr != nil {
+	http.Error(w, tempErr.Error(), http.StatusInternalServerError)
+}
 }
 
 func imageHandler(w http.ResponseWriter, r *http.Request) {
 	/*addr := "sun"//r.FormValue("str")
 	safeAddr := url.QueryEscape(addr)*/
-	fullUrl := "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=e7ef66cea848474a3e1fe3de117f4670&tags=summer&extras=url_m&per_page=1&format=json&nojsoncallback=1"
+	fullUrl := "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=e7ef66cea848474a3e1fe3de117f4670&tags=newyork,travel&extras=url_m&format=json&nojsoncallback=1&min_taken_date=1388534400&sort=relevance"
 
-fmt.Println("fullUrl", fullUrl)
+	fmt.Println("fullUrl", fullUrl)
 
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", fullUrl, nil)
@@ -42,59 +40,50 @@ fmt.Println("fullUrl", fullUrl)
 		return
 	}
 	defer resp.Body.Close()
-fmt.Println("resp:", resp)
-fmt.Println("respbody", resp.Body)
+	fmt.Println("resp:", resp)
+	fmt.Println("respbody", resp.Body)
 
 	body, dataReadErr := ioutil.ReadAll(resp.Body)
 	if dataReadErr != nil {
 		log.Fatal("ReadAll: ", dataReadErr)
 		return
 	}
-fmt.Println("body:", body)
+	fmt.Println("body:", body)
 
-	var f interface{}
+	type FlickrResponse struct {
+		Photos struct {
+			Photo []struct{ Url_m string }
+		}
+	}
+
+	var f FlickrResponse
+
 	errr := json.Unmarshal(body, &f)
 	if errr != nil {
 		log.Fatal(errr)
 	}
-	fmt.Println(f)
 
-	m := f.(map[string]interface{})
-
-
-
-
-
-	fmt.Println(m)
-
-	for k, v := range m {
-		switch vv := v.(type) {
-		case string:
-			fmt.Println(k, "is a string")
-		case map[string]interface{}:
-			fmt.Println(k, "is a map")
-			for i, u := range vv {
-            	switch uu := u.(type) {
-            	case []map[string]interface{}:
-            		fmt.Println(i, "is another map", uu)
-        		default:
-        			fmt.Println(i, u)
-            	}
-
-    
-        	}
-        	
-        default:
-        fmt.Println(k, "is of a type I don't know how to handle")
-		}
+	type ImageDisplay struct {
+		Images []string
 	}
 
-	
+	var a []string
 
-/*
-fmt.Println("photourl", photourl)
 
-	http.Redirect(w, r, photourl, 302)*/
+	for i:=0;i<4;i++{
+	photourl := f.Photos.Photo[i].Url_m
+	a = append(a, photourl)
+	}
+
+	b := ImageDisplay{Images: a}
+
+
+
+
+tempErr := upperhomeTemplate.ExecuteTemplate(w, "home", b)
+if tempErr != nil {
+	http.Error(w, tempErr.Error(), http.StatusInternalServerError)
+}
 }
 
 func main() {
@@ -103,4 +92,3 @@ func main() {
 
 	http.ListenAndServe(":8000", nil)
 }
-
