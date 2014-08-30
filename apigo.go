@@ -33,6 +33,8 @@ var RANDi int
 var cityLibrary = []string{"Tokyo", "Paris", "Singapore", "Sendai", "London", "Shanghai", "Beijing", "Seoul", "Mumbai", "Washington", "Bangkok", "Hanoi", "Toronto", "Atlanta", "Rome", "Milan", "Edinburgh", "Vienna", "Prague", "Stockholm", "Vancouver", "Barcelona", "Sydney", "Istanbul", "Hokkaido", "Santiago", "Valencia", "Peru", "Moscow", "Florence", "Berlin", "Auckland", "Kyoto"}
 
 //API funcs
+
+//doc for Flickr API: https://www.flickr.com/services/api/flickr.photos.search.html
 func ImageDisplay() {
 	reqUrl := fmt.Sprintf("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%s&tags=%s&extras=url_m&format=json&nojsoncallback=1&min_taken_date=1388534400&sort=relevance", os.Getenv("FLICKR_APIKEY"), cityLibrary[RANDi])
 
@@ -69,15 +71,40 @@ func ImageDisplay() {
 	if errr != nil {
 		log.Fatal(errr)
 	}
+	//imagesArray = []string{} //resets array on click
+	rndmap := new(map[int]bool, 0)
 
-	imagesArray = []string{}
-	for i := 0; i < 27; i++ {
-		v := rand.Intn(100)
-		respUrl := "https://farm" + strconv.Itoa(f.Photos.Photo[v].Farm) + ".staticflickr.com/" + f.Photos.Photo[v].Server + "/" + f.Photos.Photo[v].Id + "_" + f.Photos.Photo[v].Secret + "_q.jpg"
-		imagesArray = append(imagesArray, respUrl)
+	for len(rndmap) < 27 {
+		rndmap[rand.Intn(100)] = true
 	}
+
+	imagesArray := make([]int, 0)
+	for i, _ := range rndmap {
+		respUrl := "https://farm" + strconv.Itoa(f.Photos.Photo[i].Farm) + ".staticflickr.com/" + f.Photos.Photo[i].Server + "/" + f.Photos.Photo[i].Id + "_" + f.Photos.Photo[i].Secret + "_q.jpg"
+		imagesArray = append(imagesArray, respUrl)
+	} 
+
+	/*for i := 0; i < 27; i++ {
+		v := rand.Intn(100)
+		respUrl := "https://farm" + strconv.Itoa(f.Photos.Photo[v].Farm) + ".staticflickr.com/" + f.Photos.Photo[v].Server + "/" + f.Photos.Photo[v].Id + "_" + f.Photos.Photo[v].Secret + "_q.jpg"*/
+		
+		//imagesArray = append(imagesArray, respUrl)
+	//}
 }
 
+rndmap := new(map[int]bool, 0)
+
+for len(rndmap) < YOUR_LEN {
+    rndmap[rand.Intn(YOUR_MAX_RAND)] = true
+}
+
+rndslice := make([]int,0)
+for i, _ := range rndmap {
+    rndslice = append(rndslice, i)
+}
+
+
+//doc for weather API: http://openweathermap.org/weather-data#current
 func WeatherDisplay() {
 	reqUrl := fmt.Sprintf("http://api.openweathermap.org/data/2.5/weather?q=%s", cityLibrary[RANDi])
 
@@ -114,7 +141,7 @@ func WeatherDisplay() {
 		log.Fatal(errr)
 	}
 
-	celsiusNum = fmt.Sprintf("%.1f", f.Main.Temp-273.15)
+	celsiusNum = fmt.Sprintf("%.1f", f.Main.Temp-273.15)//formula to get celsius
 	rainOrShine = fmt.Sprintf("http://openweathermap.org/img/w/%s.png", f.Weather[0].Icon)
 }
 
