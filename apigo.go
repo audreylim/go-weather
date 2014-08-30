@@ -21,7 +21,7 @@ type AllApiData struct {
 type WeatherData struct {
 	Temp string
 	City string
-	RainShine string
+	Icon string
 }
 
 var dispdata AllApiData
@@ -69,6 +69,7 @@ func ImageDisplay() {
 	if errr != nil {
 		log.Fatal(errr)
 	}
+
 	imagesArray = []string{}
 	for i := 0; i < 27; i++ {
 		v := rand.Intn(100)
@@ -122,7 +123,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	RANDi = rand.Intn(len(cityLibrary))
 	ImageDisplay()
 	WeatherDisplay()
-	dispdata = AllApiData{Images: imagesArray, Weather: &WeatherData{Temp: celsiusNum, City: cityLibrary[RANDi], RainShine: rainOrShine}}
+	dispdata = AllApiData{Images: imagesArray, Weather: &WeatherData{Temp: celsiusNum, City: cityLibrary[RANDi], Icon: rainOrShine}}
 	renderTemplate(w, "home", dispdata)
 	}
 
