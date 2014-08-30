@@ -136,5 +136,5 @@ func main() {
 
 	http.Handle("/layout/", http.StripPrefix("/layout/", http.FileServer(http.Dir("layout"))))
 
-	http.ListenAndServe(os.Getenv("PORT"), nil)
+	http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 }
