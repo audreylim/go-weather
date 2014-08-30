@@ -1,8 +1,28 @@
 {{define "home"}}
 <html>
-<form action="/image" method="POST">
-<button type="submit" value="submit" name="flickr">tag</button>
-</form>{{range $i:=.Images}}
-<img src="{{$i}}" />{{end}}
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="/layout/stylesheets/home.css" />
+	</head>
+
+	<body>
+
+		<form action="/" method="POST">
+			<button type="submit" value="submit" name="flickr" id="next">Next City</button>
+		</form>
+		
+		<div id="imgbox">
+		{{range $i:=.Images}}
+		<img src="{{$i}}" id="img" />
+		{{end}}
+		</div>
+
+		{{with .Weather}}
+		<h2 id="celsius">{{.Temp}}&deg;</h2>
+		<div id="country"><h4>{{.City}}</h4>
+		<img src="{{.RainShine}}" id="rainshine">
+		{{end}}
+
+	</body>
 </html>
 {{end}}

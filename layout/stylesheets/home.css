@@ -1,0 +1,58 @@
+#img {
+	float: left;
+	display: inline;
+	padding-left: 10px;
+	padding-bottom: 10px;
+}
+
+body {
+	background: #000;
+}
+
+#imgbox {
+	width: 500px;
+	height: 500px;
+}
+
+#next {
+	background-color: #fff;
+	font-family: Helvetica;
+	border-radius: 0;
+	position: fixed;
+	top: 0;
+	right: 0;
+}
+
+
+
+h2#celsius {
+	color: #fff;
+	font-family: helvetica;
+	font-weight: lighter;
+	font-size: 210px;
+	position: fixed;
+	right: 70;
+	top: -10;
+}
+
+#country {
+	position: fixed;
+	right: 200;
+	top: 310;
+}
+
+#country h4 {
+	text-align: center;
+	color: #fff;
+	font-family: helvetica;
+	font-weight: lighter;
+	font-size: 80px;
+	width: 300px;
+}
+
+#rainshine {
+	color: #fff;
+	position: fixed;
+	right: 70;
+	top: 120;
+}
