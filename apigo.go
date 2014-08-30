@@ -80,18 +80,6 @@ func ImageDisplay() {
 	}
 }
 
-rndmap := new(map[int]bool, 0)
-
-for len(rndmap) < YOUR_LEN {
-    rndmap[rand.Intn(YOUR_MAX_RAND)] = true
-}
-
-rndslice := make([]int,0)
-for i, _ := range rndmap {
-    rndslice = append(rndslice, i)
-}
-
-
 //doc for weather API: http://openweathermap.org/weather-data#current
 func WeatherDisplay() {
 	reqUrl := fmt.Sprintf("http://api.openweathermap.org/data/2.5/weather?q=%s", cityLibrary[RANDi])
