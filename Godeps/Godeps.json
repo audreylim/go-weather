@@ -1,0 +1,5 @@
+{
+	"ImportPath": "github.com/AudreyLim/apigo",
+	"GoVersion": "go1.3",
+	"Deps": []
+}
