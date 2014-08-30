@@ -75,7 +75,7 @@ func ImageDisplay() {
 	v := rand.Perm(100)[:27]
 	for i := 0; i < 27; i++ {
 		b := v[i]
-		respUrl := "https://farm" + strconv.Itoa(f.Photos.Photo[b].Farm) + ".staticflickr.com/" + f.Photos.Photo[b].Server + "/" + f.Photos.Photo[v].Id + "_" + f.Photos.Photo[b].Secret + "_q.jpg"
+		respUrl := "https://farm" + strconv.Itoa(f.Photos.Photo[b].Farm) + ".staticflickr.com/" + f.Photos.Photo[b].Server + "/" + f.Photos.Photo[b].Id + "_" + f.Photos.Photo[b].Secret + "_q.jpg"
 
 		imagesArray = append(imagesArray, respUrl)
 	}
