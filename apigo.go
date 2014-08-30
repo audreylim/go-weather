@@ -71,25 +71,13 @@ func ImageDisplay() {
 	if errr != nil {
 		log.Fatal(errr)
 	}
-	//imagesArray = []string{} //resets array on click
-	rndmap := new(map[int]bool, 0)
-
-	for len(rndmap) < 27 {
-		rndmap[rand.Intn(100)] = true
-	}
-
-	imagesArray := make([]int, 0)
-	for i, _ := range rndmap {
-		respUrl := "https://farm" + strconv.Itoa(f.Photos.Photo[i].Farm) + ".staticflickr.com/" + f.Photos.Photo[i].Server + "/" + f.Photos.Photo[i].Id + "_" + f.Photos.Photo[i].Secret + "_q.jpg"
-		imagesArray = append(imagesArray, respUrl)
-	} 
-
-	/*for i := 0; i < 27; i++ {
+	imagesArray = []string{} //resets array on click
+	for i := 0; i < 27; i++ {
 		v := rand.Intn(100)
-		respUrl := "https://farm" + strconv.Itoa(f.Photos.Photo[v].Farm) + ".staticflickr.com/" + f.Photos.Photo[v].Server + "/" + f.Photos.Photo[v].Id + "_" + f.Photos.Photo[v].Secret + "_q.jpg"*/
+		respUrl := "https://farm" + strconv.Itoa(f.Photos.Photo[v].Farm) + ".staticflickr.com/" + f.Photos.Photo[v].Server + "/" + f.Photos.Photo[v].Id + "_" + f.Photos.Photo[v].Secret + "_q.jpg"
 		
-		//imagesArray = append(imagesArray, respUrl)
-	//}
+		imagesArray = append(imagesArray, respUrl)
+	}
 }
 
 rndmap := new(map[int]bool, 0)
