@@ -8,8 +8,8 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
-	"strconv"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -71,15 +71,16 @@ func ImageDisplay() {
 	if errr != nil {
 		log.Fatal(errr)
 	}
-	imagesArray = []string{} //resets array on click
+	imagesArray = []string{} //resets previous array on click
+	v := rand.Perm(100)[:27]
 	for i := 0; i < 27; i++ {
-		v := rand.Intn(100)
-		respUrl := "https://farm" + strconv.Itoa(f.Photos.Photo[v].Farm) + ".staticflickr.com/" + f.Photos.Photo[v].Server + "/" + f.Photos.Photo[v].Id + "_" + f.Photos.Photo[v].Secret + "_q.jpg"
-		
+		b := v[i]
+		respUrl := "https://farm" + strconv.Itoa(f.Photos.Photo[b].Farm) + ".staticflickr.com/" + f.Photos.Photo[b].Server + "/" + f.Photos.Photo[v].Id + "_" + f.Photos.Photo[b].Secret + "_q.jpg"
+
 		imagesArray = append(imagesArray, respUrl)
 	}
 }
-
+   
 //doc for weather API: http://openweathermap.org/weather-data#current
 func WeatherDisplay() {
 	reqUrl := fmt.Sprintf("http://api.openweathermap.org/data/2.5/weather?q=%s", cityLibrary[RANDi])
@@ -117,7 +118,7 @@ func WeatherDisplay() {
 		log.Fatal(errr)
 	}
 
-	celsiusNum = fmt.Sprintf("%.1f", f.Main.Temp-273.15)//formula to get celsius
+	celsiusNum = fmt.Sprintf("%.1f", f.Main.Temp-273.15) //formula to get celsius
 	rainOrShine = fmt.Sprintf("http://openweathermap.org/img/w/%s.png", f.Weather[0].Icon)
 }
 
@@ -128,7 +129,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	WeatherDisplay()
 	dispdata = AllApiData{Images: imagesArray, Weather: &WeatherData{Temp: celsiusNum, City: cityLibrary[RANDi], Icon: rainOrShine}}
 	renderTemplate(w, "home", dispdata)
-	}
+}
 
 func renderTemplate(w http.ResponseWriter, tmpl string, structdata AllApiData) {
 	t := template.Must(template.New("image").ParseFiles("layout/home.html"))
