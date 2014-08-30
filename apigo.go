@@ -36,7 +36,7 @@ var cityLibrary = []string{"Tokyo", "Paris", "Singapore", "Sendai", "London", "S
 
 //doc for Flickr API: https://www.flickr.com/services/api/flickr.photos.search.html
 func ImageDisplay() {
-	reqUrl := fmt.Sprintf("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%s&tags=%s&extras=url_m&format=json&nojsoncallback=1&min_taken_date=1388534400&sort=relevance", os.Getenv("FLICKR_APIKEY"), cityLibrary[RANDi])
+	reqUrl := fmt.Sprintf("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%s&tags=%s&extras=url_m&format=json&nojsoncallback=1&sort=relevance", os.Getenv("FLICKR_APIKEY"), cityLibrary[RANDi])
 
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", reqUrl, nil)
@@ -72,7 +72,7 @@ func ImageDisplay() {
 		log.Fatal(errr)
 	}
 	imagesArray = []string{} //resets previous array on click
-	v := rand.Perm(100)[:27]
+	v := rand.Perm(100)[:27] //get different numbers
 	for i := 0; i < 27; i++ {
 		b := v[i]
 		respUrl := "https://farm" + strconv.Itoa(f.Photos.Photo[b].Farm) + ".staticflickr.com/" + f.Photos.Photo[b].Server + "/" + f.Photos.Photo[b].Id + "_" + f.Photos.Photo[b].Secret + "_q.jpg"
