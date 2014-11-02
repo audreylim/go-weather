@@ -30,13 +30,48 @@ var imagesArray []string
 var rainOrShine string
 var RANDi int
 
-var cityLibrary = []string{"Tokyo", "Paris", "Singapore", "Sendai", "London", "Shanghai", "Beijing", "Seoul", "Mumbai", "Washington", "Bangkok", "Hanoi", "Toronto", "Atlanta", "Rome", "Milan", "Edinburgh", "Vienna", "Prague", "Stockholm", "Vancouver", "Barcelona", "Sydney", "Istanbul", "Hokkaido", "Santiago", "Valencia", "Peru", "Moscow", "Florence", "Berlin", "Auckland", "Kyoto"}
+var cityLibrary = []string{
+	"Tokyo", 
+	"Paris", 
+	"Singapore",  
+	"London", 
+	"Shanghai", 
+	"Beijing", 
+	"Seoul", 
+	"Mumbai", 
+	"Washington", 
+	"Bangkok", 
+	"Hanoi", 
+	"Toronto", 
+	"Atlanta", 
+	"Rome", 
+	"Milan", 
+	"Edinburgh", 
+	"Vienna", 
+	"Prague", 
+	"Stockholm", 
+	"Vancouver", 
+	"Barcelona", 
+	"Sydney", 
+	"Istanbul", 
+	"Hokkaido", 
+	"Santiago", 
+	"Valencia", 
+	"Peru", 
+	"Moscow", 
+	"Florence", 
+	"Berlin", 
+	"Auckland", 
+	"Kyoto"
+}
 
 //API funcs
 
 //doc for Flickr API: https://www.flickr.com/services/api/flickr.photos.search.html
 func ImageDisplay() {
-	reqUrl := fmt.Sprintf("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%s&tags=%s&extras=url_m&format=json&nojsoncallback=1&sort=relevance", os.Getenv("FLICKR_APIKEY"), cityLibrary[RANDi])
+	reqUrl := fmt.Sprintf("https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=%s&tags=%s&extras=url_m&format=json&nojsoncallback=1&sort=relevance", 
+		os.Getenv("FLICKR_APIKEY"), 
+		cityLibrary[RANDi])
 
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", reqUrl, nil)
