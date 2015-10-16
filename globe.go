@@ -79,16 +79,16 @@ func ImageDisplay() {
 		log.Fatal("NewRequest: ", err)
 		return
 	}
-	resp, requestErr := client.Do(req)
-	if requestErr != nil {
-		log.Fatal("Do: ", requestErr)
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal("Do: ", err)
 		return
 	}
 	defer resp.Body.Close()
 
-	body, dataReadErr := ioutil.ReadAll(resp.Body)
-	if dataReadErr != nil {
-		log.Fatal("ReadAll: ", dataReadErr)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal("ReadAll: ", err)
 		return
 	}
 
@@ -102,9 +102,8 @@ func ImageDisplay() {
 	}
 
 	var f FlickrResponse
-	errr := json.Unmarshal(body, &f)
-	if errr != nil {
-		log.Fatal(errr)
+	if err := json.Unmarshal(body, &f); err != nil {
+		log.Fatalf("unmarshal err: %v", err)
 	}
 	imagesArray = []string{} //resets previous array on click
 	v := rand.Perm(100)[:27] //get different numbers
@@ -118,7 +117,10 @@ func ImageDisplay() {
 
 //doc for weather API: http://openweathermap.org/weather-data#current
 func WeatherDisplay() {
-	reqUrl := fmt.Sprintf("http://api.openweathermap.org/data/2.5/weather?q=%s", cityLibrary[RANDi])
+	reqUrl := fmt.Sprintf("http://api.openweathermap.org/data/2.5/weather?q=%s&APPID=%s",
+		cityLibrary[RANDi],
+		os.Getenv("WEATHER_APIKEY"),
+	)
 
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", reqUrl, nil)
@@ -126,16 +128,16 @@ func WeatherDisplay() {
 		log.Fatal("NewRequest: ", err)
 		return
 	}
-	resp, requestErr := client.Do(req)
-	if requestErr != nil {
-		log.Fatal("Do: ", requestErr)
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal("Do: ", err)
 		return
 	}
 	defer resp.Body.Close()
 
-	body, dataReadErr := ioutil.ReadAll(resp.Body)
-	if dataReadErr != nil {
-		log.Fatal("ReadAll: ", dataReadErr)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal("ReadAll: ", err)
 		return
 	}
 
@@ -148,9 +150,8 @@ func WeatherDisplay() {
 		}
 	}
 	var f WeatherResponse
-	errr := json.Unmarshal(body, &f)
-	if errr != nil {
-		log.Fatal(errr)
+	if err := json.Unmarshal(body, &f); err != nil {
+		log.Fatalf("unmarshal weatherdisplay %v", err)
 	}
 
 	celsiusNum = fmt.Sprintf("%.1f", f.Main.Temp-273.15) //formula to get celsius
@@ -168,9 +169,8 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 
 func renderTemplate(w http.ResponseWriter, tmpl string, structdata AllApiData) {
 	t := template.Must(template.New("image").ParseFiles("layout/home.html"))
-	tErr := t.ExecuteTemplate(w, tmpl, structdata)
-	if tErr != nil {
-		http.Error(w, tErr.Error(), http.StatusInternalServerError)
+	if err := t.ExecuteTemplate(w, tmpl, structdata); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
 
